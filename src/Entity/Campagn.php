@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\Statut;
+use App\Enum\StatutCampagn;
 use App\Enum\TypeCampagn;
 use App\Repository\CampagnRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,8 +33,8 @@ class Campagn
     #[ORM\Column(nullable: true, enumType: TypeCampagn::class)]
     private ?TypeCampagn $type = null;
 
-    #[ORM\Column(enumType: Statut::class)]
-    private ?Statut $satut = null;
+    #[ORM\Column(enumType: StatutCampagn::class)]
+    private ?StatutCampagn $statut = null;
 
     /**
      * @var Collection<int, ModeDeCotisation>
@@ -112,14 +112,14 @@ class Campagn
         return $this;
     }
 
-    public function getSatut(): ?Statut
+    public function getStatut(): ?StatutCampagn
     {
-        return $this->satut;
+        return $this->statut;
     }
 
-    public function setSatut(Statut $satut): static
+    public function setStatut(StatutCampagn $statut): static
     {
-        $this->satut = $satut;
+        $this->statut = $statut;
 
         return $this;
     }

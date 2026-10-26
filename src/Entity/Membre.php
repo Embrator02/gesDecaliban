@@ -40,9 +40,16 @@ class Membre
     #[ORM\OneToMany(targetEntity: ModeDeCotisation::class, mappedBy: 'membre')]
     private Collection $modeDeCotisations;
 
+    /**
+     * @var Collection<int, Pret>
+     */
+    #[ORM\OneToMany(targetEntity: Pret::class, mappedBy: 'membres')]
+    private Collection $prets;
+
     public function __construct()
     {
         $this->modeDeCotisations = new ArrayCollection();
+        $this->prets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,6 +153,36 @@ class Membre
             // set the owning side to null (unless already changed)
             if ($modeDeCotisation->getMembre() === $this) {
                 $modeDeCotisation->setMembre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Pret>
+     */
+    public function getPrets(): Collection
+    {
+        return $this->prets;
+    }
+
+    public function addPret(Pret $pret): static
+    {
+        if (!$this->prets->contains($pret)) {
+            $this->prets->add($pret);
+            $pret->setMembres($this);
+        }
+
+        return $this;
+    }
+
+    public function removePret(Pret $pret): static
+    {
+        if ($this->prets->removeElement($pret)) {
+            // set the owning side to null (unless already changed)
+            if ($pret->getMembres() === $this) {
+                $pret->setMembres(null);
             }
         }
 
