@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Enum\Statut;
 use App\Enum\TypeCampagn;
 use App\Repository\CampagnRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +35,17 @@ class Campagn
 
     #[ORM\Column(enumType: Statut::class)]
     private ?Statut $satut = null;
+
+    /**
+     * @var Collection<int, ModeDeCotisation>
+     */
+    #[ORM\OneToMany(targetEntity: ModeDeCotisation::class, mappedBy: 'campagn')]
+    private Collection $modeDeCotisations;
+
+    public function __construct()
+    {
+        $this->modeDeCotisations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +120,36 @@ class Campagn
     public function setSatut(Statut $satut): static
     {
         $this->satut = $satut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ModeDeCotisation>
+     */
+    public function getModeDeCotisations(): Collection
+    {
+        return $this->modeDeCotisations;
+    }
+
+    public function addModeDeCotisation(ModeDeCotisation $modeDeCotisation): static
+    {
+        if (!$this->modeDeCotisations->contains($modeDeCotisation)) {
+            $this->modeDeCotisations->add($modeDeCotisation);
+            $modeDeCotisation->setCampagn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModeDeCotisation(ModeDeCotisation $modeDeCotisation): static
+    {
+        if ($this->modeDeCotisations->removeElement($modeDeCotisation)) {
+            // set the owning side to null (unless already changed)
+            if ($modeDeCotisation->getCampagn() === $this) {
+                $modeDeCotisation->setCampagn(null);
+            }
+        }
 
         return $this;
     }
