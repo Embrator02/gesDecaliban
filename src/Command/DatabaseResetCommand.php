@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'mahmathasan:database:reset',
     description: 'Supprime, recrée la base de données gesDeCaliban.',
 )]
-class AppDatabaseResetCommand extends Command
+class DatabaseResetCommand extends Command
 {
     public function __invoke(InputInterface $input, OutputInterface $output): int
     {
