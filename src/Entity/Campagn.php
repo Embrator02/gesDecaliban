@@ -23,9 +23,12 @@ class Campagn
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateDebut = null;
+    
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createAt = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $dateFin = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateFinAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $montant = null;
@@ -76,18 +79,30 @@ class Campagn
         return $this;
     }
 
-    public function getDateFin(): ?\DateTime
+    public function getCreateAt(): ?\DateTimeImmutable
     {
-        return $this->dateFin;
+        return $this->createAt;
     }
 
-    public function setDateFin(\DateTime $dateFin): static
+    public function setCreateAt(?\DateTimeImmutable $createAt): static
     {
-        $this->dateFin = $dateFin;
+        $this->createAt = $createAt;
 
         return $this;
     }
 
+    public function getDateFinAt(): ?\DateTime
+    {
+        return $this->dateFinAt;
+    }
+
+    public function setDateFinAt(?\DateTime $dateFinAt): static
+    {
+        $this->dateFinAt = $dateFinAt;
+
+        return $this;
+    }
+    
     public function getMontant(): ?int
     {
         return $this->montant;
