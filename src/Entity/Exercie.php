@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ExercieRepository::class)]
 class Exercie
 {
+    use \App\Trait\TraitDate;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -26,12 +28,6 @@ class Exercie
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $dateRetributionAt = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $updateAt = null;
 
     #[ORM\Column(enumType: StatutCampagn::class)]
     private ?StatutCampagn $statutExercice = null;
@@ -89,30 +85,6 @@ class Exercie
     public function setDateRetributionAt(?\DateTime $dateRetributionAt): static
     {
         $this->dateRetributionAt = $dateRetributionAt;
-
-        return $this;
-    }
-
-    public function getCreateAt(): ?\DateTimeImmutable
-    {
-        return $this->createAt;
-    }
-
-    public function setCreateAt(\DateTimeImmutable $createAt): static
-    {
-        $this->createAt = $createAt;
-
-        return $this;
-    }
-
-    public function getUpdateAt(): ?\DateTime
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(?\DateTime $updateAt): static
-    {
-        $this->updateAt = $updateAt;
 
         return $this;
     }

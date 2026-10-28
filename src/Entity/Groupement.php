@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: GroupementRepository::class)]
 class Groupement
 {
+    use \App\Trait\TraitDate;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,12 +26,6 @@ class Groupement
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $address = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $updateAt = null;
 
     /**
      * @var Collection<int, Exercie>
@@ -79,30 +75,6 @@ class Groupement
     public function setAddress(?string $address): static
     {
         $this->address = $address;
-
-        return $this;
-    }
-
-    public function getCreateAt(): ?\DateTimeImmutable
-    {
-        return $this->createAt;
-    }
-
-    public function setCreateAt(\DateTimeImmutable $createAt): static
-    {
-        $this->createAt = $createAt;
-
-        return $this;
-    }
-
-    public function getUpdateAt(): ?\DateTime
-    {
-        return $this->updateAt;
-    }
-
-    public function setUpdateAt(?\DateTime $updateAt): static
-    {
-        $this->updateAt = $updateAt;
 
         return $this;
     }
