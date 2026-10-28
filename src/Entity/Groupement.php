@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GroupementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,17 @@ class Groupement
 
     #[ORM\Column(nullable: true)]
     private ?\DateTime $updateAt = null;
+
+    /**
+     * @var Collection<int, Exercie>
+     */
+    #[ORM\OneToMany(targetEntity: Exercie::class, mappedBy: 'groupement', orphanRemoval: true)]
+    private Collection $exercies;
+
+    public function __construct()
+    {
+        $this->exercies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +103,36 @@ class Groupement
     public function setUpdateAt(?\DateTime $updateAt): static
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exercie>
+     */
+    public function getExercies(): Collection
+    {
+        return $this->exercies;
+    }
+
+    public function addExercy(Exercie $exercy): static
+    {
+        if (!$this->exercies->contains($exercy)) {
+            $this->exercies->add($exercy);
+            $exercy->setGroupement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercy(Exercie $exercy): static
+    {
+        if ($this->exercies->removeElement($exercy)) {
+            // set the owning side to null (unless already changed)
+            if ($exercy->getGroupement() === $this) {
+                $exercy->setGroupement(null);
+            }
+        }
 
         return $this;
     }
