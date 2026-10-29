@@ -47,6 +47,10 @@ abstract class Campagn
     #[ORM\OneToMany(targetEntity: ModeDeCotisation::class, mappedBy: 'campagn')]
     private Collection $modeDeCotisations;
 
+    #[ORM\ManyToOne(inversedBy: 'campagns')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Exercice $exercice = null;
+
     public function __construct()
     {
         $this->modeDeCotisations = new ArrayCollection();
@@ -155,6 +159,18 @@ abstract class Campagn
                 $modeDeCotisation->setCampagn(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getExercice(): ?Exercice
+    {
+        return $this->exercice;
+    }
+
+    public function setExercice(?Exercice $exercice): static
+    {
+        $this->exercice = $exercice;
 
         return $this;
     }

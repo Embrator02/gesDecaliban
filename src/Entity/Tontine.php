@@ -7,22 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TontineRepository::class)]
 class Tontine extends Campagn
-{
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+{ 
 
     #[ORM\Column(nullable: true)]
     private ?int $nbrtours = null;
 
     #[ORM\Column]
     private ?int $tour = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getNbrtours(): ?int
     {

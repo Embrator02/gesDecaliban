@@ -8,21 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EpargneRepository::class)]
 class Epargne extends Campagn
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column]
     private ?int $periodicite = null;
 
     #[ORM\Column]
-    private ?int $objectif = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    private ?int $objectif = null; 
 
     public function getPeriodicite(): ?int
     {

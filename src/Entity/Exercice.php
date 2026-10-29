@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Enum\StatutCampagn;
-use App\Repository\ExercieRepository;
+use App\Repository\ExerciceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ExercieRepository::class)]
-class Exercie
+#[ORM\Entity(repositoryClass: ExerciceRepository::class)]
+class Exercice
 {
     use \App\Trait\TraitDate;
 
@@ -35,6 +37,17 @@ class Exercie
     #[ORM\ManyToOne(inversedBy: 'exercies')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Groupement $groupement = null;
+
+    /**
+     * @var Collection<int, Campagn>
+     */
+    #[ORM\OneToMany(targetEntity: Campagn::class, mappedBy: 'exercice')]
+    private Collection $campagns;
+
+    public function __construct()
+    {
+        $this->campagns = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,6 +122,36 @@ class Exercie
     public function setGroupement(?Groupement $groupement): static
     {
         $this->groupement = $groupement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Campagn>
+     */
+    public function getCampagns(): Collection
+    {
+        return $this->campagns;
+    }
+
+    public function addCampagn(Campagn $campagn): static
+    {
+        if (!$this->campagns->contains($campagn)) {
+            $this->campagns->add($campagn);
+            $campagn->setExercice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCampagn(Campagn $campagn): static
+    {
+        if ($this->campagns->removeElement($campagn)) {
+            // set the owning side to null (unless already changed)
+            if ($campagn->getExercice() === $this) {
+                $campagn->setExercice(null);
+            }
+        }
 
         return $this;
     }

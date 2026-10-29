@@ -28,9 +28,9 @@ class Groupement
     private ?string $address = null;
 
     /**
-     * @var Collection<int, Exercie>
+     * @var Collection<int, Exercice>
      */
-    #[ORM\OneToMany(targetEntity: Exercie::class, mappedBy: 'groupement', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'groupement', orphanRemoval: true)]
     private Collection $exercies;
 
     public function __construct()
@@ -80,14 +80,14 @@ class Groupement
     }
 
     /**
-     * @return Collection<int, Exercie>
+     * @return Collection<int, Exercice>
      */
-    public function getExercies(): Collection
+    public function getExercices(): Collection
     {
         return $this->exercies;
     }
 
-    public function addExercy(Exercie $exercy): static
+    public function addExercy(Exercice $exercy): static
     {
         if (!$this->exercies->contains($exercy)) {
             $this->exercies->add($exercy);
@@ -97,7 +97,7 @@ class Groupement
         return $this;
     }
 
-    public function removeExercy(Exercie $exercy): static
+    public function removeExercy(Exercice $exercy): static
     {
         if ($this->exercies->removeElement($exercy)) {
             // set the owning side to null (unless already changed)
