@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\DiscriminatorColumn(name: "type", type: "string")]
 #[ORM\DiscriminatorMap([
     'epargne' => Epargne::class,
+    'Tontine' => Tontine::class,
 ])]
 abstract class Campagn
 {
