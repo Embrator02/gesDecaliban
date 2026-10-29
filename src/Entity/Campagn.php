@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\StatutCampagn;
-use App\Enum\TypeCampagn;
 use App\Repository\CampagnRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +10,12 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CampagnRepository::class)]
-class Campagn
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap([
+    'epargne' => Epargne::class,
+])]
+abstract class Campagn
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +28,7 @@ class Campagn
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateDebut = null;
     
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $createAt = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -32,9 +36,6 @@ class Campagn
 
     #[ORM\Column(nullable: true)]
     private ?int $montant = null;
-
-    #[ORM\Column(nullable: true, enumType: TypeCampagn::class)]
-    private ?TypeCampagn $type = null;
 
     #[ORM\Column(enumType: StatutCampagn::class)]
     private ?StatutCampagn $statut = null;
@@ -111,18 +112,6 @@ class Campagn
     public function setMontant(?int $montant): static
     {
         $this->montant = $montant;
-
-        return $this;
-    }
-
-    public function getType(): ?TypeCampagn
-    {
-        return $this->type;
-    }
-
-    public function setType(?TypeCampagn $type): static
-    {
-        $this->type = $type;
 
         return $this;
     }
